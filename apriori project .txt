@@ -1,0 +1,219 @@
+﻿$ Transaction ['item1'] = "i1, i2, i5"; 
+$ Transaction ['item2'] = "i2, i4"; 
+$ Transaction ['item3'] = "i2, i3"; 
+$ Transaction ['item4'] = "i1, i2, i4"; 
+$ Transaction ['item5'] = "i1, i3"; 
+$ Transaction ['item6'] = "i2, i3"; 
+$ Transaction ['item7'] = "i1, i3"; 
+$ Transaction ['item8'] = "i1, i2, i3, i5"; 
+$ Transaction ['item9'] = "i1, i2, i3"; 
+$ The c1 = gen_c1 ($ transaction); 
+$ The l1 = gen_l1 ($ C1, 1); 
+
+/ / Generate c1 
+
+for ($ k = 1;; $ k + +) 
+{ 
+$ {'C'. ($ K +1)} = gen_ck ($ {'l'. $ K}, ($ k +1), $ transaction, 2); 
+$ {'L'. ($ K +1)} = $ {'c'. ($ K +1)}; 
+if (empty ($ {'c'. ($ k +1)})) 
+{ 
+exit; 
+} 
+else 
+{ 
+print_r ($ {'c'. ($ k +1)}); 
+the echo "
+"; 
+
+} 
+/ / $ {'L'. ($ K +1)} = gen_lk ($ {'l'. $ K}, ($ k +1)); 
+} 
+/ / Print_r ($ c1); 
+the echo "
+"; 
+print_r ($ c2); 
+the echo "
+"; 
+print_r ($ c3); 
+the echo "
+"; 
+print_r ($ c4); 
+the echo "
+"; 
+print_r ($ c5); 
+the echo "
+"; 
+
+
+function gen_ck ($ l, $ k, $ t, $ sup = 2) 
+{ 
+The $ array_row = 0; 
+for ($ i = 0; $ i { 
+for ($ j = $ i +1; $ j { 
+/ / Echo $ l [$ i] ['item']. "=>". $ L [$ j] ['item']; 
+/ / Echo "
+; 
+$ Temp_array = array (); 
+$ Match = true; 
+if ($ k> 2) 
+{ 
+$ Split_array_i = split (',', $ l [$ i] ['item']) ;/ / ck an item in the data decomposition into an array 
+/ / Print_r ($ split_array_i); 
+/ / Echo "i 
+"; 
+
+$ Split_array_j = split (',', $ L [$ j] ['item']); 
+/ / The print_r (the $ split_array_j); 
+/ / Echo "j 
+"; 
+
+for ($ i3 = 0; $ i3 <(count ($ split_array_i) -1); $ i3 + +) 
+{ 
+if ($ split_array_i [$ i3]! = $ split_array_j [$ i3]) 
+{ 
+$ Match = false; 
+} 
+} 
+} 
+if ($ match) 
+{ 
+$ Split_array = split (',', $ l [$ i] ['item']) ;/ / ck an item in the data decomposition into an array 
+for ($ i1 = 0; $ i1 { 
+array_push ($ temp_array, $ split_array [$ i1]); 
+} 
+$ Split_array = split (',', $ L [$ j] ['item']); 
+for ($ i1 = 0; $ i1 { 
+array_push ($ temp_array, $ split_array [$ i1]); 
+} 
+
+/ / Array_push ($ temp_array, $ l [$ i] ['item']); 
+/ / Array_push ($ temp_array, $ l [$ j] ['item']); 
+$ Temp_array = array_unique ($ temp_array); 
+
+sort ($ temp_array); 
+
+if ($ k == 2) 
+{ 
+/ / The print_r (the $ temp_array); 
+/ / Echo "
+; 
+} 
+/ / $ {'C'. $ K} [$ array_row] ['item'] = $ temp_array [0]. ",". $ Temp_array [1]; 
+$ Temp_string =''; 
+for ($ i4 = 0; $ i4 { 
+$ Temp_string = $ temp_string. $ Temp_array [$ i4]. ','; 
+} 
+/ / Echo $ temp_string; 
+/ / Echo "
+; 
+
+$ Temp_string = substr ($ temp_string, 0, strlen ($ temp_string) -1) ;/ / go to the tail of a comma, this module can only be removed in this way at the end of a comma 
+/ / $ {'C'. $ K} [$ array_row] ['item'] = $ temp_string; 
+/ / $ {'C'. $ K} [$ array_row] ['support'] = 1; 
+$ C [$ array_row] ['item'] = $ temp_string; 
+$ C [the $ array_row] ['support'] = 1; 
+$ Array_row a + +; 
+} 
+else 
+{ 
+/ / Echo "not match"; 
+} 
+} 
+} 
+/ / Print_r ($ {'c'. $ K}); 
+/ / Support statistics 
+for ($ i = 0; $ i { 
+$ Temp_support = 0; 
+
+for ($ i1 = 1; $ i1 <= count ($ t); $ i1 + +) 
+{ 
+$ Temp_array = split (',', $ c [$ i] ['item']); 
+$ Temp_support1 = true; 
+for ($ i2 = 0; $ i2 { 
+/ / Echo $ t ['item'. $ I1]. "=>". $ Temp_array [$ i2]; 
+if (strpos ($ t ['item'. $ i1], $ temp_array [$ i2]) === false) 
+{ 
+$ Temp_support1 = false; 
+} 
+
+} 
+if ($ temp_support1) 
+{ 
+$ Temp_support. + +; 
+} 
+
+} 
+/ / Echo $ temp_support; 
+/ / Echo "
+; 
+$ C [$ i] ['support'] = $ temp_support; 
+} 
+/ / Remove support for the project is less than the minimum confidence 
+$ Temp_array = array (); 
+The $ array_row = 0; 
+for ($ i = 0; $ i { 
+if ($ c [$ i] ['support']> = $ sup) 
+{ 
+$ Temp_array [$ array_row] ['item'] = $ c [$ i] ['item']; 
+$ Temp_array [$ array_row] ['support'] = $ c [$ i] ['support']; 
+$ Array_row a + +; 
+} 
+} 
+$ C = $ temp_array; 
+return $ c; 
+} 
+the function gen_lk ($ c) 
+{ 
+
+} 
+
+the function gen_c1 ($ t) 
+{ 
+The $ array_row = 0; 
+for ($ i = 1; $ i <= count ($ t); $ i + +) 
+{ 
+$ Temp_array = array (); 
+$ Temp_array = split (',', $ t ['item'. $ I]); 
+foreach ($ temp_array as $ temp_value) 
+{ 
+if (in_array_two_dimension (& $ the c $ temp_value)) / / value already exists ck array incremented 
+{ 
+/ / $ C [$ array_row] ['support'] + +; 
+} 
+else / / new value into practice 
+{ 
+$ C [$ array_row] ['item'] = $ temp_value; 
+$ C [the $ array_row] ['support'] = 1; 
+$ Array_row a + +; 
+} 
+} 
+} 
+return $ c; 
+} 
+function gen_l1 ($ c1, $ sup = 2) 
+{ 
+The $ array_row = 0; 
+$ Temp_array = array (); 
+for ($ i = 0; $ i { 
+if ($ c1 [$ i] ['support']> $ sup) 
+{ 
+$ Temp_array [$ array_row] ['item'] = $ c1 [$ i] ['item']; 
+$ Temp_array [$ array_row] ['support'] = $ c1 [$ i] ['support']; 
+$ Array_row a + +; 
+} 
+} 
+return $ temp_array; 
+} 
+the function in_array_two_dimension ($ array, $ value) 
+{ 
+for ($ i = 0; $ i { 
+if ($ array [$ i] ['item'] == $ value) 
+{ 
+$ Array [$ i] ['support'] + +; 
+return true; 
+} 
+} 
+return false; 
+}
+
